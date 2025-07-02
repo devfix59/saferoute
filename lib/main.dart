@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:saferoute/pages/setting_page.dart'; // ✅ Import correct
+import 'package:saferoute/pages/camera_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
     );
   }
-}
+} 
 
 class HomePage extends StatefulWidget {
   @override
@@ -30,29 +32,80 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar avec icône menu à gauche et bouton plus à droite
+      
       appBar: AppBar(
-        title: Text('saferoute'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            // Action pour le menu
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Menu ouvert !')),
-            );
-          },
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+                size: 24,
+              ),
+                onPressed: () {
+    // Navigation avec animation vers SettingPage
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => const SettingPage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return SlideTransition(
+                          position: animation.drive(
+                            Tween(begin: const Offset(-1.0, 0.0), end: Offset.zero),
+                          ),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+            ),
+          ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              // Action pour le bouton plus
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Bouton plus pressé !')),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                onPressed: () {
+                    // Navigation vers CameraPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CameraPage()),
+                    );
+                  },
+              ),
+            ),
           ),
         ],
       ),
